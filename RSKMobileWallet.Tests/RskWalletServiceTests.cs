@@ -26,5 +26,31 @@ namespace RSKMobileWallet.Tests
 
             Assert.AreEqual(address, addressToMatch);
         }
+
+        [TestMethod]
+        public void WhenResolvingNonExistingDomainThenDontResolves()
+        {
+            const string addressToMatch = null;
+            const string domain = "2c4a4a346ddc3122c2628dbe9dbbca1bbd59551c.rsk";
+            var address = _rns.GetAddress(domain).Result;
+
+            Console.WriteLine(address);
+
+            Assert.AreEqual(address, addressToMatch);
+        }
+
+
+        [TestMethod]
+        public void WhenResolvingInvalidDomainThenThrows()
+        {
+            const string domain = "rsk";
+            
+            Assert.ThrowsException<ArgumentException>(() =>
+            {
+                var address = _rns.GetAddress(domain).Result;
+
+                Console.WriteLine(address);
+            });
+        }
     }
 }

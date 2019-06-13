@@ -9,9 +9,9 @@ namespace RSKMobileWallet.Nethereum.Services
 {
     public class RskRnsResolverService : IRskRnsResolverService
     {
-        private static string RskMainnetNodeUrl { get; set; } = "https://public-node.rsk.co";
-        private string RnsRegistry { get; set; } = "0xcb868aeabd31e2b66f74e9a55cf064abb31a4ad5";
-        private Web3 Web3Client { get; set; }
+        private static string RskMainnetNodeUrl { get; } = "https://public-node.rsk.co";
+        private string RnsRegistry { get; } = "0xcb868aeabd31e2b66f74e9a55cf064abb31a4ad5";
+        private Web3 Web3Client { get; }
 
         public RskRnsResolverService() : this(new Web3(RskMainnetNodeUrl)) { }
 
@@ -22,6 +22,7 @@ namespace RSKMobileWallet.Nethereum.Services
 
         public async Task<string> GetAddress(string accountDomain)
         {
+            if (!IsValidDomain(accountDomain)) throw new ArgumentException("Invalid name.", nameof(accountDomain));
             try
             {           
                 var ensRegistryService = new ENSRegistryService(Web3Client, RnsRegistry);
@@ -40,6 +41,12 @@ namespace RSKMobileWallet.Nethereum.Services
             {
                 return null;
             }
+        }
+
+        private static bool IsValidDomain(string accountDomain)
+        {
+            //TODO: implement
+            return true;
         }
     }
 }
