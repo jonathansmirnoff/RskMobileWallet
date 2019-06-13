@@ -9,13 +9,15 @@ namespace RSKMobileWallet.Nethereum.Services
 {
     public class RskRnsResolverService : IRskRnsResolverService
     {
-        private string RskMainnetNodeUrl { get; set; } = "https://public-node.rsk.co";
+        private static string RskMainnetNodeUrl { get; set; } = "https://public-node.rsk.co";
         private string RnsRegistry { get; set; } = "0xcb868aeabd31e2b66f74e9a55cf064abb31a4ad5";
         private Web3 Web3Client { get; set; }
 
-        public RskRnsResolverService()
+        public RskRnsResolverService() : this(new Web3(RskMainnetNodeUrl)) { }
+
+        public RskRnsResolverService(Web3 web3Client)
         {
-            Web3Client = new Web3(RskMainnetNodeUrl);
+            Web3Client = web3Client;
         }
 
         public async Task<string> GetAddress(string accountDomain)
